@@ -1,602 +1,182 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MultiGráfica Jacareí – Impressão e Personalização</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --black:    #0A0A0A;
-      --charcoal: #141414;
-      --dark:     #1C1C1C;
-      --border:   #2A2A2A;
-      --silver:   #999999;
-      --white:    #FFFFFF;
-      --yellow:   #F5C400;
-      --magenta:  #E0186C;
-      --cyan:     #00AEEF;
-      --wa:       #25D366;
-      --fd: 'Barlow Condensed', sans-serif;
-      --fb: 'Barlow', sans-serif;
-    }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body { font-family: var(--fb); background: var(--black); color: var(--white); overflow-x: hidden; }
-    a { text-decoration: none; color: inherit; }
-    ul { list-style: none; }
-    .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
 
-    /* NAV */
-    .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,10,10,.97); border-bottom: 3px solid var(--yellow); backdrop-filter: blur(8px); }
-    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 66px; padding: 0 24px; max-width: 1180px; margin: 0 auto; }
-    .logo { display: flex; align-items: center; gap: 10px; }
-    .logo svg { width: 34px; height: 34px; }
-    .logo-txt { font-family: var(--fd); font-weight: 900; text-transform: uppercase; line-height: .95; font-size: 17px; letter-spacing: .02em; }
-    .logo-txt small { display: block; font-size: 9px; letter-spacing: .2em; color: var(--silver); font-weight: 600; }
-    .nav-links { display: flex; gap: 28px; align-items: center; }
-    .nav-links a { font-family: var(--fd); font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--silver); transition: color .2s; }
-    .nav-links a:hover { color: var(--yellow); }
-    .nav-wa { background: var(--wa); color: #fff !important; padding: 8px 16px; border-radius: 4px; display: flex; align-items: center; gap: 6px; }
-    .nav-wa:hover { filter: brightness(1.1); }
-    .hbg { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
-    .hbg span { display: block; width: 26px; height: 2px; background: #fff; border-radius: 2px; }
-    .mob { display: none; flex-direction: column; background: #111; border-top: 1px solid #222; padding: 12px 24px 20px; }
-    .mob.open { display: flex; }
-    .mob a { font-family: var(--fd); font-size: 18px; font-weight: 700; text-transform: uppercase; padding: 12px 0; border-bottom: 1px solid #222; color: var(--silver); }
-    .mob a:last-child { border: none; color: var(--wa); }
 
-    /* HERO */
-    .hero { padding-top: 66px; min-height: 100vh; display: flex; align-items: center; background: var(--black); position: relative; overflow: hidden; }
-    .hero::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle, #222 1px, transparent 1px); background-size: 28px 28px; opacity: .5; }
-    .glow-y { position: absolute; top: -120px; right: 10%; width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, rgba(245,196,0,.13) 0%, transparent 70%); pointer-events: none; }
-    .glow-m { position: absolute; bottom: -80px; right: 5%; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, rgba(224,24,108,.1) 0%, transparent 70%); pointer-events: none; }
-    .glow-c { position: absolute; top: 40%; left: -60px; width: 280px; height: 280px; border-radius: 50%; background: radial-gradient(circle, rgba(0,174,239,.08) 0%, transparent 70%); pointer-events: none; }
-    .hero-inner { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; max-width: 1180px; margin: 0 auto; padding: 80px 24px; width: 100%; }
-    .badge { display: inline-flex; align-items: center; gap: 10px; background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 100px; padding: 6px 16px 6px 6px; margin-bottom: 24px; }
-    .badge-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--wa); box-shadow: 0 0 6px var(--wa); animation: blink 1.8s infinite; }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
-    .badge span { font-size: 12px; font-weight: 600; letter-spacing: .08em; color: var(--silver); }
-    h1.hero-title { font-family: var(--fd); font-weight: 900; text-transform: uppercase; font-size: clamp(54px, 7vw, 90px); line-height: .9; letter-spacing: -.02em; margin-bottom: 22px; }
-    .ty { color: var(--yellow); }
-    .tm { color: var(--magenta); }
-    .tc { color: var(--cyan); }
-    .hero-desc { font-size: 16px; color: var(--silver); line-height: 1.7; margin-bottom: 36px; max-width: 400px; }
-    .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
-    .hv { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .hvc { background: var(--charcoal); border: 1px solid var(--border); border-radius: 10px; aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; font-family: var(--fd); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--silver); position: relative; overflow: hidden; transition: border-color .3s, transform .3s; }
-    .hvc:hover { transform: scale(1.02); border-color: var(--yellow); }
-    .hvc.s2 { grid-column: span 2; aspect-ratio: 2/1; }
-    .hvc em { font-style: normal; font-size: 40px; }
-    .hvc::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; }
-    .hvc:nth-child(1)::after { background: var(--yellow); }
-    .hvc:nth-child(2)::after { background: var(--magenta); }
-    .hvc:nth-child(3)::after { background: var(--cyan); }
-    .hvc:nth-child(4)::after { background: var(--yellow); }
 
-    /* BOTÕES */
-    .btn { display: inline-flex; align-items: center; gap: 8px; font-family: var(--fd); font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; padding: 13px 24px; border-radius: 4px; border: none; cursor: pointer; transition: filter .2s, transform .15s; }
-    .btn:hover { filter: brightness(1.12); transform: translateY(-2px); }
-    .btn-y { background: var(--yellow); color: var(--black); }
-    .btn-wa { background: var(--wa); color: #fff; }
-    .btn-out { background: transparent; color: #fff; border: 2px solid #333; }
-    .btn-out:hover { border-color: var(--yellow); color: var(--yellow); filter: none; }
 
-    /* TICKER */
-    .ticker { background: var(--yellow); padding: 11px 0; overflow: hidden; white-space: nowrap; }
-    .tk-inner { display: inline-flex; animation: tkMove 30s linear infinite; }
-    @keyframes tkMove { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-    .tk-item { font-family: var(--fd); font-size: 14px; font-weight: 900; text-transform: uppercase; letter-spacing: .1em; color: var(--black); padding: 0 28px; flex-shrink: 0; }
-    .tk-dot { color: var(--magenta); }
+MULTIGRÁFICA
+JACAREÍ
 
-    /* STATS */
-    .stats { background: var(--charcoal); padding: 44px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-    .stats-g { display: grid; grid-template-columns: repeat(4,1fr); }
-    .stat { text-align: center; padding: 20px; border-right: 1px solid var(--border); }
-    .stat:last-child { border-right: none; }
-    .sn { font-family: var(--fd); font-size: 42px; font-weight: 900; line-height: 1; display: block; }
-    .sl { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--silver); margin-top: 5px; display: block; }
 
-    /* SECTION */
-    .sec { padding: 88px 0; }
-    .stag { display: inline-block; font-family: var(--fd); font-size: 11px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--yellow); margin-bottom: 12px; }
-    .stitle { font-family: var(--fd); font-weight: 900; text-transform: uppercase; font-size: clamp(34px, 5vw, 54px); line-height: .95; letter-spacing: -.01em; }
-    .ssub { color: var(--silver); font-size: 16px; line-height: 1.6; margin-top: 14px; max-width: 500px; }
-    .sh { margin-bottom: 52px; }
 
-    /* SERVIÇOS */
-    .svc-g { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; background: var(--border); border-radius: 10px; overflow: hidden; }
-    .svc { background: var(--charcoal); padding: 30px 24px; border-bottom: 3px solid transparent; transition: background .2s, border-color .2s; }
-    .svc:nth-child(3n+1):hover { background: #1e1e1e; border-color: var(--yellow); }
-    .svc:nth-child(3n+2):hover { background: #1e1e1e; border-color: var(--magenta); }
-    .svc:nth-child(3n+0):hover { background: #1e1e1e; border-color: var(--cyan); }
-    .svc-e { font-size: 34px; margin-bottom: 12px; display: block; }
-    .svc-n { font-family: var(--fd); font-size: 19px; font-weight: 700; text-transform: uppercase; margin-bottom: 7px; }
-    .svc-d { font-size: 13px; color: var(--silver); line-height: 1.6; }
 
-    /* GALERIA */
-    .gal-bg { background: var(--charcoal); }
-    .gal-g { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-top: 48px; }
-    .gi { background: var(--dark); border-radius: 8px; aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; position: relative; cursor: pointer; border: 1px solid var(--border); overflow: hidden; transition: transform .3s, border-color .3s; }
-    .gi:hover { transform: scale(1.02); border-color: var(--yellow); }
-    .gi:nth-child(1) { grid-column: span 2; aspect-ratio: 2/1; }
-    .gi:nth-child(5) { grid-column: span 2; aspect-ratio: 2/1; }
-    .gi-e { font-size: 50px; }
-    .gi-l { font-family: var(--fd); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--silver); }
-    .gi-ov { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.75) 0%, transparent 60%); display: flex; align-items: flex-end; padding: 16px; opacity: 0; transition: opacity .3s; }
-    .gi:hover .gi-ov { opacity: 1; }
-    .gi-ov span { font-family: var(--fd); font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+GRÁFICA RÁPIDA · JACAREÍ — SP
+IMPRIMA. DIVULGUE. DESTAQUE-SE.
+Cartões de visita, banners, adesivos, camisetas e brindes personalizados. Monte seu pedido on-line e receba o orçamento direto no WhatsApp.
+MONTAR PEDIDO
 
-    /* PEDIDO */
-    .ped-g { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
-    .ped-d p { color: var(--silver); line-height: 1.7; margin-top: 16px; font-size: 16px; }
-    .steps { margin-top: 30px; display: flex; flex-direction: column; gap: 18px; }
-    .step { display: flex; gap: 14px; }
-    .step-n { width: 36px; height: 36px; flex-shrink: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--fd); font-size: 18px; font-weight: 900; }
-    .step-b { padding-top: 6px; }
-    .step-b strong { color: #fff; font-weight: 600; display: block; margin-bottom: 2px; }
-    .step-b span { color: var(--silver); font-size: 14px; }
 
-    .fbox { background: var(--charcoal); border: 1px solid var(--border); border-radius: 12px; padding: 34px 28px; }
-    .ftitle { font-family: var(--fd); font-size: 21px; font-weight: 700; text-transform: uppercase; margin-bottom: 22px; border-bottom: 2px solid var(--yellow); padding-bottom: 14px; }
-    .fg { margin-bottom: 14px; }
-    .fg label { display: block; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--silver); margin-bottom: 5px; }
-    .fg select, .fg input, .fg textarea { width: 100%; background: #0f0f0f; border: 1px solid #2a2a2a; border-radius: 5px; color: #fff; font-family: var(--fb); font-size: 14px; padding: 10px 13px; outline: none; transition: border-color .2s; appearance: none; }
-    .fg select:focus, .fg input:focus, .fg textarea:focus { border-color: var(--yellow); }
-    .fg select option { background: #1a1a1a; }
-    .fg textarea { resize: vertical; min-height: 78px; }
-    .fg2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .dyn { background: #0f0f0f; border: 1px dashed #2a2a2a; border-radius: 6px; padding: 16px; margin: 10px 0 14px; }
-    .dyn-h { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--silver); margin-bottom: 10px; }
-    .prev { background: #0f0f0f; border: 1px solid #222; border-left: 3px solid var(--yellow); border-radius: 6px; padding: 13px 15px; font-size: 13px; color: var(--silver); line-height: 1.8; margin: 10px 0; display: none; }
-    .prev.show { display: block; }
-    .prev strong { color: #fff; }
-    .din-inp { background: #0f0f0f; border: 1px solid #2a2a2a; color: #fff; padding: 10px 13px; border-radius: 5px; width: 100%; font-family: var(--fb); font-size: 14px; outline: none; transition: border-color .2s; }
-    .din-inp:focus { border-color: var(--yellow); }
-    .din-sel { background: #0f0f0f; border: 1px solid #2a2a2a; color: #fff; padding: 10px 13px; border-radius: 5px; width: 100%; font-family: var(--fb); font-size: 14px; outline: none; transition: border-color .2s; appearance: none; }
-    .din-sel:focus { border-color: var(--yellow); }
+		ORÇAMENTO NO WHATSAPP  Orçamento rápido e sem compromisso  Produção local em Jacareí  Pedido 100% personalizado
 
-    /* CONTATO */
-    .cont-bg { background: var(--charcoal); }
-    .cont-g { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
-    .ci-l { margin-top: 30px; display: flex; flex-direction: column; gap: 14px; }
-    .ci { display: flex; align-items: flex-start; gap: 13px; }
-    .ci-i { width: 44px; height: 44px; border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 20px; }
-    .ciy { background: rgba(245,196,0,.12); }
-    .cim { background: rgba(224,24,108,.12); }
-    .cic { background: rgba(0,174,239,.12); }
-    .cig { background: rgba(37,211,102,.12); }
-    .ci-lbl { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--silver); display: block; }
-    .ci-v { font-size: 16px; font-weight: 600; color: #fff; margin-top: 2px; display: block; }
-    .cta-st { display: flex; flex-direction: column; gap: 12px; margin-top: 28px; }
-    .cta-st .btn { justify-content: center; }
-    .cd { background: var(--dark); border: 1px solid var(--border); border-radius: 12px; padding: 30px; margin-bottom: 14px; text-align: center; }
-    .cd-e { font-size: 48px; margin-bottom: 12px; display: block; }
-    .cd h3 { font-family: var(--fd); font-size: 19px; font-weight: 700; text-transform: uppercase; margin-bottom: 7px; }
-    .cd p { color: var(--silver); font-size: 14px; margin-bottom: 18px; }
 
-    /* WA FLOAT */
-    .waf { position: fixed; bottom: 24px; right: 24px; z-index: 99; width: 58px; height: 58px; background: var(--wa); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(37,211,102,.4); animation: wap 2.5s infinite; transition: transform .2s; }
-    .waf:hover { transform: scale(1.1); animation: none; }
-    .waf svg { width: 28px; height: 28px; }
-    @keyframes wap { 0%,100%{box-shadow:0 4px 20px rgba(37,211,102,.4)} 50%{box-shadow:0 4px 32px rgba(37,211,102,.75)} }
 
-    /* FOOTER */
-    .foot { background: #060606; border-top: 3px solid var(--yellow); padding: 32px 0 24px; }
-    .foot-i { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; }
-    .foot-c { font-size: 13px; color: var(--silver); }
-    .foot-lk { display: flex; gap: 22px; }
-    .foot-lk a { font-family: var(--fd); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--silver); transition: color .2s; }
-    .foot-lk a:hover { color: var(--yellow); }
 
-    @media (max-width: 900px) {
-      .nav-links { display: none; }
-      .hbg { display: flex; }
-      .hero-inner { grid-template-columns: 1fr; }
-      .hv { display: none; }
-      .svc-g { grid-template-columns: 1fr 1fr; }
-      .ped-g { grid-template-columns: 1fr; }
-      .cont-g { grid-template-columns: 1fr; }
-      .stats-g { grid-template-columns: 1fr 1fr; }
-      .stat { border-right: none; border-bottom: 1px solid var(--border); }
-    }
-    @media (max-width: 600px) {
-      .svc-g { grid-template-columns: 1fr; }
-      .gal-g { grid-template-columns: 1fr 1fr; }
-      .gi:nth-child(1), .gi:nth-child(5) { grid-column: span 2; }
-      .fg2 { grid-template-columns: 1fr; }
-      .foot-i { flex-direction: column; text-align: center; }
-    }
-  </style>
-</head>
-<body>
 
-<!-- Logo SVG reutilizável -->
-<svg style="display:none">
-  <symbol id="mg" viewBox="0 0 60 60">
-    <rect x="2" y="20" width="30" height="38" rx="2" fill="#00AEEF" transform="rotate(-18 17 39)"/>
-    <rect x="10" y="14" width="30" height="38" rx="2" fill="#E0186C" transform="rotate(-7 25 33)"/>
-    <rect x="20" y="9"  width="30" height="38" rx="2" fill="#F5C400" transform="rotate(5 35 28)"/>
-  </symbol>
-</svg>
 
-<!-- NAV -->
-<nav class="nav">
-  <div class="nav-inner">
-    <a href="#" class="logo">
-      <svg><use href="#mg"/></svg>
-      <div class="logo-txt">MultiGráfica<small>Jacareí</small></div>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#servicos">Serviços</a></li>
-      <li><a href="#galeria">Trabalhos</a></li>
-      <li><a href="#pedido">Fazer Pedido</a></li>
-      <li><a href="#contato">Contato</a></li>
-      <li>
-        <a href="https://wa.me/5512981759519?text=Olá!%20Vi%20o%20site%20e%20quero%20um%20orçamento." target="_blank" class="nav-wa">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-          WhatsApp
-        </a>
-      </li>
-    </ul>
-    <button class="hbg" id="hbg"><span></span><span></span><span></span></button>
-  </div>
-  <div class="mob" id="mob">
-    <a href="#servicos" onclick="cm()">🖨️ Serviços</a>
-    <a href="#galeria"  onclick="cm()">📸 Trabalhos</a>
-    <a href="#pedido"   onclick="cm()">🎨 Fazer Pedido</a>
-    <a href="#contato"  onclick="cm()">📍 Contato</a>
-    <a href="https://wa.me/5512981759519" target="_blank">💬 WhatsApp</a>
-  </div>
-</nav>
 
-<!-- HERO -->
-<section class="hero" id="inicio">
-  <div class="glow-y"></div><div class="glow-m"></div><div class="glow-c"></div>
-  <div class="hero-inner">
-    <div>
-      <div class="badge"><div class="badge-dot"></div><span>Atendimento rápido pelo WhatsApp</span></div>
-      <h1 class="hero-title">
-        <span class="ty">Imprima.</span><br/>
-        <span class="tm">Crie.</span><br/>
-        <span class="tc">Destaque-se.</span>
-      </h1>
-      <p class="hero-desc">Cartões, banners, camisas, brindes e muito mais. Qualidade profissional, entrega rápida e atendimento direto pelo WhatsApp em Jacareí.</p>
-      <div class="hero-ctas">
-        <a href="#pedido" class="btn btn-y">🎨 Montar Pedido</a>
-        <a href="https://wa.me/5512981759519?text=Olá!%20Quero%20um%20orçamento." target="_blank" class="btn btn-wa">💬 Orçamento Grátis</a>
-      </div>
-    </div>
-    <div class="hv">
-      <div class="hvc s2"><em>🖨️</em><span>Impressão de Alta Qualidade</span></div>
-      <div class="hvc"><em>👕</em><span>Camisas</span></div>
-      <div class="hvc"><em>🎁</em><span>Brindes</span></div>
-    </div>
-  </div>
-</section>
 
-<!-- TICKER -->
-<div class="ticker" aria-hidden="true">
-  <div class="tk-inner">
-    <span class="tk-item">🃏 Cartão de Visita</span><span class="tk-item tk-dot">✦</span>
-    <span class="tk-item">🚩 Banners e Faixas</span><span class="tk-item tk-dot">✦</span>
-    <span class="tk-item">👕 Camisas Personalizadas</span><span class="tk-item tk-dot">✦</span>
-    <span class="tk-item">☕ Canecas e Brindes</span><span class="tk-item tk-dot">✦</span>
-    <span class="tk-item">📋 Panfletos e Folders</span><span class="tk-item tk-dot">✦</span>
-    <span class="tk-item">🏷️ Adesivos e Etiquetas</span><span class="tk-item tk-dot">✦</span>
-    <span class="tk-item">📦 Embalagens</span><span class="tk-item tk-dot">✦</span>
-    <span class="tk-item">🎨 Criação de Arte</span><span class="tk-item tk-dot">✦</span>
-    <span class="tk-item">🃏 Cartão de Visita</span><span class="tk-item tk-dot">✦</span>
-    <span class="tk-item">🚩 Banners e Faixas</span><span class="tk-item tk-dot">✦</span>
-    <span class="tk-item">👕 Camisas Personalizadas</span><span class="tk-item tk-dot">✦</span>
-    <span class="tk-item">☕ Canecas e Brindes</span><span class="tk-item tk-dot">✦</span>
-    <span class="tk-item">📋 Panfletos e Folders</span><span class="tk-item tk-dot">✦</span>
-    <span class="tk-item">🏷️ Adesivos e Etiquetas</span><span class="tk-item tk-dot">✦</span>
-    <span class="tk-item">📦 Embalagens</span><span class="tk-item tk-dot">✦</span>
-    <span class="tk-item">🎨 Criação de Arte</span><span class="tk-item tk-dot">✦</span>
-  </div>
-</div>
 
-<!-- STATS -->
-<div class="stats">
-  <div class="container">
-    <div class="stats-g">
-      <div class="stat"><span class="sn ty">+15</span><span class="sl">anos de mercado</span></div>
-      <div class="stat"><span class="sn tm">+500</span><span class="sl">clientes atendidos</span></div>
-      <div class="stat"><span class="sn tc">100%</span><span class="sl">personalizado</span></div>
-      <div class="stat"><span class="sn" style="color:#fff">24h</span><span class="sl">orçamento no WhatsApp</span></div>
-    </div>
-  </div>
-</div>
 
-<!-- SERVIÇOS -->
-<section class="sec" id="servicos">
-  <div class="container">
-    <div class="sh">
-      <span class="stag">O que fazemos</span>
-      <h2 class="stitle">Nossos<br/>Serviços</h2>
-      <p class="ssub">Tudo que sua marca precisa para se comunicar com impacto, feito com capricho em Jacareí.</p>
-    </div>
-    <div class="svc-g">
-      <div class="svc"><span class="svc-e">🃏</span><div class="svc-n">Cartão de Visita</div><p class="svc-d">Couché, laminação fosca ou brilho, verniz localizado. Sua marca na palma da mão.</p></div>
-      <div class="svc"><span class="svc-e">📋</span><div class="svc-n">Panfletos e Folders</div><p class="svc-d">Impressão em alta definição para divulgar promoções, eventos e serviços.</p></div>
-      <div class="svc"><span class="svc-e">🚩</span><div class="svc-n">Banners e Faixas</div><p class="svc-d">Lona, vinil ou papel. Todos os tamanhos para fachadas, eventos e exposições.</p></div>
-      <div class="svc"><span class="svc-e">👕</span><div class="svc-n">Camisas Personalizadas</div><p class="svc-d">Sublimação, serigrafia e DTF. Uniformes, times, eventos e presentes únicos.</p></div>
-      <div class="svc"><span class="svc-e">☕</span><div class="svc-n">Canecas e Brindes</div><p class="svc-d">Canecas, garrafinhas, mouse pads, chaveiros e muito mais personalizados.</p></div>
-      <div class="svc"><span class="svc-e">🏷️</span><div class="svc-n">Adesivos e Etiquetas</div><p class="svc-d">Rótulos, adesivos recortados e etiquetas personalizadas para seus produtos.</p></div>
-      <div class="svc"><span class="svc-e">📦</span><div class="svc-n">Embalagens</div><p class="svc-d">Caixinhas, sacolas kraft e papel de seda para presentear com estilo.</p></div>
-      <div class="svc"><span class="svc-e">🎨</span><div class="svc-n">Criação de Arte</div><p class="svc-d">Design profissional para todos os materiais. Logotipo, identidade visual e edição.</p></div>
-      <div class="svc"><span class="svc-e">📅</span><div class="svc-n">Calendários e Agendas</div><p class="svc-d">Calendários de parede, mesa ou bolso com a identidade da sua empresa.</p></div>
-    </div>
-    <div style="text-align:center;margin-top:34px">
-      <a href="https://wa.me/5512981759519?text=Olá!%20Quero%20saber%20mais%20sobre%20os%20serviços." target="_blank" class="btn btn-wa">💬 Perguntar sobre outros produtos</a>
-    </div>
-  </div>
-</section>
 
-<!-- GALERIA -->
-<section class="sec gal-bg" id="galeria">
-  <div class="container">
-    <div class="sh">
-      <span class="stag">Nossos Trabalhos</span>
-      <h2 class="stitle">Feito com<br/>capricho.</h2>
-    </div>
-    <div class="gal-g">
-      <div class="gi"><span class="gi-e">🖨️</span><span class="gi-l">Impressão Digital</span><div class="gi-ov"><span>Impressão Premium</span></div></div>
-      <div class="gi"><span class="gi-e">🃏</span><span class="gi-l">Cartões de Visita</span><div class="gi-ov"><span>Cartões de Visita</span></div></div>
-      <div class="gi"><span class="gi-e">👕</span><span class="gi-l">Camisas</span><div class="gi-ov"><span>Camisas Personalizadas</span></div></div>
-      <div class="gi"><span class="gi-e">🚩</span><span class="gi-l">Banners</span><div class="gi-ov"><span>Banners e Faixas</span></div></div>
-      <div class="gi"><span class="gi-e">☕</span><span class="gi-l">Brindes</span><div class="gi-ov"><span>Brindes e Canecas</span></div></div>
-      <div class="gi"><span class="gi-e">🏷️</span><span class="gi-l">Adesivos</span><div class="gi-ov"><span>Adesivos e Etiquetas</span></div></div>
-    </div>
-    <div style="text-align:center;margin-top:30px">
-      <a href="https://www.instagram.com/multigrafica.jacarei/" target="_blank" class="btn btn-y">📸 Ver mais no Instagram</a>
-    </div>
-  </div>
-</section>
+SUA MARCA AQUI
 
-<!-- PEDIDO -->
-<section class="sec" id="pedido">
-  <div class="container">
-    <div class="ped-g">
-      <div class="ped-d">
-        <span class="stag">Peça Online</span>
-        <h2 class="stitle">Monte seu<br/>pedido aqui.</h2>
-        <p>Selecione o produto, personalize e envie direto para o nosso WhatsApp. Orçamento em instantes!</p>
-        <div class="steps">
-          <div class="step">
-            <div class="step-n" style="background:var(--yellow);color:var(--black)">1</div>
-            <div class="step-b"><strong>Escolha o produto</strong><span>Cartão, banner, camisa, brinde e muito mais.</span></div>
-          </div>
-          <div class="step">
-            <div class="step-n" style="background:var(--magenta);color:#fff">2</div>
-            <div class="step-b"><strong>Personalize</strong><span>Quantidade, tamanho, material e acabamento.</span></div>
-          </div>
-          <div class="step">
-            <div class="step-n" style="background:var(--cyan);color:var(--black)">3</div>
-            <div class="step-b"><strong>Envie pelo WhatsApp</strong><span>Pedido estruturado pronto. Receba orçamento rápido!</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="fbox">
-        <div class="ftitle">🎨 Configurar Pedido</div>
-        <div class="fg">
-          <label>Produto *</label>
-          <select id="psel" onchange="udyn()">
-            <option value="">— Selecione o produto —</option>
-            <option value="cartao">🃏 Cartão de Visita</option>
-            <option value="panfleto">📋 Panfleto / Folder</option>
-            <option value="banner">🚩 Banner / Faixa</option>
-            <option value="camisa">👕 Camisa Personalizada</option>
-            <option value="caneca">☕ Caneca / Brinde</option>
-            <option value="adesivo">🏷️ Adesivo / Etiqueta</option>
-            <option value="embalagem">📦 Embalagem</option>
-            <option value="calendario">📅 Calendário</option>
-            <option value="outro">✏️ Outro produto</option>
-          </select>
-        </div>
-        <div class="dyn" id="dbox"><div class="dyn-h">ℹ️ Selecione um produto para ver as opções de personalização</div></div>
-        <div class="fg2">
-          <div class="fg"><label>Quantidade *</label><input type="number" id="qtd" placeholder="Ex: 100" min="1" oninput="uprev()"/></div>
-          <div class="fg"><label>Prazo desejado</label>
-            <select id="prazo" onchange="uprev()">
-              <option>Normal (5–7 dias)</option><option>Rápido (2–3 dias)</option><option>Urgente (24h)</option>
-            </select>
-          </div>
-        </div>
-        <div class="fg"><label>Seu nome *</label><input type="text" id="nome" placeholder="Como podemos te chamar?" oninput="uprev()"/></div>
-        <div class="fg"><label>Arte / Observações</label><textarea id="obs" placeholder="Cores, logo, referências, link para arte, observações..." oninput="uprev()"></textarea></div>
-        <div class="fg"><label>Tem arte pronta?</label>
-          <select id="arte" onchange="uprev()">
-            <option>✅ Sim, tenho arte pronta</option>
-            <option>🎨 Não, preciso de criação</option>
-            <option>🔧 Tenho referência, preciso de ajuste</option>
-          </select>
-        </div>
-        <div class="prev" id="prev"><div class="dyn-h">📋 Prévia do pedido</div><div id="prevc"></div></div>
-        <button class="btn btn-wa" style="width:100%;justify-content:center;font-size:17px;padding:15px;margin-top:6px" onclick="enviar()">💬 Enviar Pedido pelo WhatsApp</button>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- CONTATO -->
-<section class="sec cont-bg" id="contato">
-  <div class="container">
-    <div class="cont-g">
-      <div>
-        <span class="stag">Fale com a gente</span>
-        <h2 class="stitle">Estamos<br/>aqui para<br/>você.</h2>
-        <p class="ssub">Atendimento rápido e personalizado. Entre em contato pelo WhatsApp ou nos visite em Jacareí.</p>
-        <div class="ci-l">
-          <div class="ci"><div class="ci-i ciy">📍</div><div><span class="ci-lbl">Endereço</span><span class="ci-v">Jacareí – SP</span></div></div>
-          <div class="ci"><div class="ci-i cic">🕐</div><div><span class="ci-lbl">Horário</span><span class="ci-v">Seg–Sex: 8h às 18h · Sáb: 8h às 13h</span></div></div>
-          <div class="ci"><div class="ci-i cig">💬</div><div><span class="ci-lbl">WhatsApp 1</span><span class="ci-v">(12) 98175-9519</span></div></div>
-          <div class="ci"><div class="ci-i cig">💬</div><div><span class="ci-lbl">WhatsApp 2</span><span class="ci-v">(12) 98202-5825</span></div></div>
-          <div class="ci"><div class="ci-i cim">📸</div><div><span class="ci-lbl">Instagram</span><span class="ci-v">@multigrafica.jacarei</span></div></div>
-        </div>
-        <div class="cta-st">
-          <a href="https://wa.me/5512981759519?text=Olá!%20Vi%20o%20site%20e%20quero%20um%20orçamento." target="_blank" class="btn btn-wa">💬 Chamar WhatsApp (12) 98175-9519</a>
-          <a href="https://wa.me/5512982025825?text=Olá!%20Vi%20o%20site%20e%20quero%20um%20orçamento." target="_blank" class="btn btn-wa">💬 Chamar WhatsApp (12) 98202-5825</a>
-          <a href="https://www.instagram.com/multigrafica.jacarei/" target="_blank" class="btn btn-y">📸 Ver Instagram</a>
-        </div>
-      </div>
-      <div>
-        <div class="cd">
-          <span class="cd-e">💬</span>
-          <h3>Resposta em Minutos</h3>
-          <p>Mande sua arte ou dúvida e receba orçamento rapidinho. Sem complicação.</p>
-          <a href="https://wa.me/5512981759519?text=Olá!%20Preciso%20de%20um%20orçamento." target="_blank" class="btn btn-wa" style="width:100%;justify-content:center;">💬 Falar Agora</a>
-        </div>
-        <div class="cd">
-          <span class="cd-e">📸</span>
-          <h3>@multigrafica.jacarei</h3>
-          <p>Veja nossos trabalhos, promoções e novidades no Instagram.</p>
-          <a href="https://www.instagram.com/multigrafica.jacarei/" target="_blank" class="btn btn-y" style="width:100%;justify-content:center;">Ver Perfil</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- FOOTER -->
-<footer class="foot">
-  <div class="container">
-    <div class="foot-i">
-      <div class="logo">
-        <svg style="width:26px;height:26px"><use href="#mg"/></svg>
-        <div class="logo-txt" style="font-size:14px">MultiGráfica<small>Jacareí · SP</small></div>
-      </div>
-      <p class="foot-c">© 2025 MultiGráfica Jacareí · Todos os direitos reservados</p>
-      <div class="foot-lk">
-        <a href="#servicos">Serviços</a>
-        <a href="#pedido">Pedido</a>
-        <a href="#contato">Contato</a>
-      </div>
-    </div>
-  </div>
-</footer>
 
-<!-- WA FLOAT -->
-<a class="waf" href="https://wa.me/5512981759519?text=Olá!%20Vi%20o%20site%20e%20quero%20um%20orçamento." target="_blank" title="Chamar no WhatsApp">
-  <svg viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-</a>
 
-<script>
-  document.getElementById('hbg').addEventListener('click', () => document.getElementById('mob').classList.toggle('open'));
-  function cm() { document.getElementById('mob').classList.remove('open'); }
+PROVA DE COR · CMYK · 300 DPI
 
-  const WA1 = '5512981759519';
++15
+ANOS DE MERCADO
++500
+CLIENTES ATENDIDOS
+100%
+PERSONALIZADO
+24h
+RESPOSTA NO WHATSAPP
+O QUE FAZEMOS
+NOSSOS SERVIÇOS
+Tudo o que a sua marca precisa para se comunicar com qualidade, produzido com capricho em Jacareí.
 
-  const DYNS = {
-    cartao: `<div class="dyn-h">📐 Cartão de Visita</div><div class="fg2">
-      <div class="fg"><label>Tamanho</label><select class="din-sel" id="d1" onchange="uprev()"><option>9×5 cm (padrão)</option><option>8,8×4,8 cm</option><option>Outro</option></select></div>
-      <div class="fg"><label>Papel</label><select class="din-sel" id="d2" onchange="uprev()"><option>Couché 300g</option><option>Couché 250g</option><option>Triplex</option></select></div>
-      <div class="fg"><label>Acabamento</label><select class="din-sel" id="d3" onchange="uprev()"><option>Laminação brilho</option><option>Laminação fosca</option><option>Verniz localizado</option><option>Sem acabamento</option></select></div>
-      <div class="fg"><label>Impressão</label><select class="din-sel" id="d4" onchange="uprev()"><option>Frente e verso</option><option>Só frente</option></select></div>
-    </div>`,
-    panfleto: `<div class="dyn-h">📋 Panfleto / Folder</div><div class="fg2">
-      <div class="fg"><label>Tamanho</label><select class="din-sel" id="d1" onchange="uprev()"><option>A5 (14,8×21 cm)</option><option>A4 (21×29,7 cm)</option><option>1/3 A4 (10×21 cm)</option><option>Outro</option></select></div>
-      <div class="fg"><label>Dobras</label><select class="din-sel" id="d2" onchange="uprev()"><option>Sem dobra (panfleto)</option><option>Dobra ao meio</option><option>Dobra sanfona</option></select></div>
-      <div class="fg"><label>Papel</label><select class="din-sel" id="d3" onchange="uprev()"><option>Couché 150g</option><option>Couché 90g</option><option>Couché 250g</option></select></div>
-      <div class="fg"><label>Impressão</label><select class="din-sel" id="d4" onchange="uprev()"><option>Frente e verso</option><option>Só frente</option></select></div>
-    </div>`,
-    banner: `<div class="dyn-h">🚩 Banner / Faixa</div><div class="fg2">
-      <div class="fg"><label>Largura (cm)</label><input class="din-inp" type="number" id="d1" placeholder="Ex: 80" onchange="uprev()"/></div>
-      <div class="fg"><label>Altura (cm)</label><input class="din-inp" type="number" id="d2" placeholder="Ex: 120" onchange="uprev()"/></div>
-      <div class="fg"><label>Material</label><select class="din-sel" id="d3" onchange="uprev()"><option>Lona 440g</option><option>Papel fotográfico</option><option>Vinil adesivo</option></select></div>
-      <div class="fg"><label>Acabamento</label><select class="din-sel" id="d4" onchange="uprev()"><option>Ilhós e bainha</option><option>Bastão</option><option>Só impressão</option></select></div>
-    </div>`,
-    camisa: `<div class="dyn-h">👕 Camisa Personalizada</div><div class="fg2">
-      <div class="fg"><label>Técnica</label><select class="din-sel" id="d1" onchange="uprev()"><option>Sublimação total</option><option>Serigrafia</option><option>DTF (transfer)</option></select></div>
-      <div class="fg"><label>Tipo</label><select class="din-sel" id="d2" onchange="uprev()"><option>Camiseta básica</option><option>Polo</option><option>Baby look</option><option>Raglan</option></select></div>
-      <div class="fg"><label>Tamanhos</label><input class="din-inp" type="text" id="d3" placeholder="Ex: P, M, G, GG..." onchange="uprev()"/></div>
-      <div class="fg"><label>Cor</label><input class="din-inp" type="text" id="d4" placeholder="Ex: Branca, Preta..." onchange="uprev()"/></div>
-    </div>`,
-    caneca: `<div class="dyn-h">☕ Caneca / Brinde</div><div class="fg2">
-      <div class="fg"><label>Tipo</label><select class="din-sel" id="d1" onchange="uprev()"><option>Caneca cerâmica 325ml</option><option>Caneca mágica</option><option>Caneca inox 450ml</option><option>Squeeze 500ml</option><option>Mouse pad</option><option>Chaveiro</option></select></div>
-      <div class="fg"><label>Cor / Detalhe</label><input class="din-inp" type="text" id="d2" placeholder="Ex: Branca, Preta..." onchange="uprev()"/></div>
-    </div>`,
-    adesivo: `<div class="dyn-h">🏷️ Adesivo / Etiqueta</div><div class="fg2">
-      <div class="fg"><label>Tipo</label><select class="din-sel" id="d1" onchange="uprev()"><option>Adesivo em folha A4</option><option>Adesivo recortado</option><option>Etiqueta redonda</option><option>Etiqueta retangular</option></select></div>
-      <div class="fg"><label>Tamanho</label><input class="din-inp" type="text" id="d2" placeholder="Ex: 5×5 cm, A4..." onchange="uprev()"/></div>
-      <div class="fg"><label>Material</label><select class="din-sel" id="d3" onchange="uprev()"><option>Vinil brilho</option><option>Vinil fosco</option><option>Papel couché</option><option>Transparente</option></select></div>
-    </div>`,
-    embalagem: `<div class="dyn-h">📦 Embalagem</div><div class="fg2">
-      <div class="fg"><label>Tipo</label><select class="din-sel" id="d1" onchange="uprev()"><option>Caixinha personalizada</option><option>Sacola kraft</option><option>Papel de seda</option><option>Tag / Pendão</option></select></div>
-      <div class="fg"><label>Medidas</label><input class="din-inp" type="text" id="d2" placeholder="Ex: 10×10×10 cm..." onchange="uprev()"/></div>
-    </div>`,
-    calendario: `<div class="dyn-h">📅 Calendário</div><div class="fg2">
-      <div class="fg"><label>Tipo</label><select class="din-sel" id="d1" onchange="uprev()"><option>Parede A3 (12 folhas)</option><option>Mesa (tripé)</option><option>Bolso</option><option>Planejador anual</option></select></div>
-      <div class="fg"><label>Ano</label><select class="din-sel" id="d2" onchange="uprev()"><option>2025</option><option>2026</option></select></div>
-    </div>`,
-    outro: `<div class="dyn-h">✏️ Descreva o produto que você precisa no campo Observações abaixo</div>`
-  };
+CARTÕES DE VISITA
+Couché 250g/300g, laminação fosca ou brilho e verniz localizado.
 
-  function udyn() {
-    const v = document.getElementById('psel').value;
-    document.getElementById('dbox').innerHTML = DYNS[v] || '<div class="dyn-h">ℹ️ Selecione um produto para ver as opções</div>';
-    uprev();
-  }
+PANFLETOS E FOLDERS
+Impressão em alta definição para divulgar promoções, eventos e serviços.
 
-  function gdyn() {
-    const parts = [];
-    document.querySelectorAll('#dbox .din-sel, #dbox .din-inp').forEach(el => { if (el.value) parts.push(el.value); });
-    return parts.join(' | ');
-  }
+BANNERS E FAIXAS
+Lona, vinil ou papel, em qualquer medida, com ilhós, bainha ou bastão.
 
-  function uprev() {
-    const p = document.getElementById('psel');
-    const qtd = document.getElementById('qtd').value;
-    const nome = document.getElementById('nome').value;
-    const obs = document.getElementById('obs').value;
-    const prazo = document.getElementById('prazo').value;
-    const arte = document.getElementById('arte').value;
-    const dyn = gdyn();
-    if (!p.value && !qtd && !nome) { document.getElementById('prev').classList.remove('show'); return; }
-    const pl = p.options[p.selectedIndex]?.text || '—';
-    let h = '<strong>👤 Cliente:</strong> ' + (nome||'—') + '<br/>';
-    h += '<strong>📦 Produto:</strong> ' + pl + '<br/>';
-    if (dyn) h += '<strong>📐 Especificações:</strong> ' + dyn + '<br/>';
-    h += '<strong>🔢 Quantidade:</strong> ' + (qtd||'—') + ' un.<br/>';
-    h += '<strong>⏱️ Prazo:</strong> ' + prazo + '<br/>';
-    h += '<strong>🎨 Arte:</strong> ' + arte + '<br/>';
-    if (obs) h += '<strong>📝 Obs:</strong> ' + obs;
-    document.getElementById('prevc').innerHTML = h;
-    document.getElementById('prev').classList.add('show');
-  }
+CAMISETAS PERSONALIZADAS
+Sublimação, serigrafia e DTF para uniformes, times e eventos.
 
-  function enviar() {
-    const p = document.getElementById('psel');
-    const qtd = document.getElementById('qtd').value;
-    const nome = document.getElementById('nome').value;
-    const obs = document.getElementById('obs').value;
-    const prazo = document.getElementById('prazo').value;
-    const arte = document.getElementById('arte').value;
-    const dyn = gdyn();
-    if (!p.value) { alert('Por favor, selecione um produto.'); return; }
-    if (!qtd)     { alert('Por favor, informe a quantidade.'); return; }
-    if (!nome)    { alert('Por favor, informe seu nome.'); return; }
-    const pl = p.options[p.selectedIndex].text;
-    let msg = '🖨️ *NOVO PEDIDO – MultiGráfica Jacareí*\n\n';
-    msg += '👤 *Cliente:* ' + nome + '\n';
-    msg += '📦 *Produto:* ' + pl + '\n';
-    if (dyn) msg += '📐 *Especificações:* ' + dyn + '\n';
-    msg += '🔢 *Quantidade:* ' + qtd + ' un.\n';
-    msg += '⏱️ *Prazo desejado:* ' + prazo + '\n';
-    msg += '🎨 *Arte:* ' + arte + '\n';
-    if (obs) msg += '📝 *Obs:* ' + obs + '\n';
-    msg += '\n_Pedido via site multigrafica.jacarei_';
-    window.open('https://wa.me/' + WA1 + '?text=' + encodeURIComponent(msg), '_blank');
-  }
+CANECAS E BRINDES
+Canecas, squeezes, mouse pads e chaveiros com a sua arte.
 
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', e => {
-      const t = document.querySelector(a.getAttribute('href'));
-      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
-    });
-  });
-</script>
-</body>
-</html>
+ADESIVOS E ETIQUETAS
+Rótulos, adesivos recortados e etiquetas para produtos e embalagens.
+
+EMBALAGENS
+Caixas, sacolas kraft, tags e papel de seda com a identidade da marca.
+
+CRIAÇÃO DE ARTE
+Design profissional: logotipo, identidade visual e ajustes de arquivo.
+
+CALENDÁRIOS E AGENDAS
+Modelos de parede, mesa e bolso personalizados para a sua empresa.
+
+FALAR SOBRE OUTRO PRODUTO
+NOSSOS TRABALHOS
+FEITO COM CAPRICHO
+Alguns dos materiais que produzimos todos os dias. Veja mais fotos no nosso Instagram.
+
+IMPRESSÃO DIGITAL
+AMOSTRA
+
+CARTÕES DE VISITA
+AMOSTRA
+
+CAMISETAS
+AMOSTRA
+
+BANNERS
+AMOSTRA
+
+CANECAS E BRINDES
+AMOSTRA
+
+ADESIVOS
+AMOSTRA
+
+VER TRABALHOS NO INSTAGRAM
+PEÇA ON-LINE
+MONTE SEU PEDIDO
+Escolha o produto, personalize e envie direto para o nosso WhatsApp. O pedido chega estruturado e o orçamento sai rapidinho.
+1
+Escolha o produto
+Cartão, banner, camiseta, brinde e muito mais.
+2
+Personalize
+Quantidade, tamanho, material e acabamento.
+3
+Envie pelo WhatsApp
+Pedido pronto e organizado. Resposta rápida.
+CONFIGURAR PEDIDO
+PRODUTO *
+            Selecione o produto
+            Cartão de visita
+            Panfleto / Folder
+            Banner / Faixa
+            Camiseta personalizada
+            Caneca / Brinde
+            Adesivo / Etiqueta
+            Embalagem
+            Calendário
+            Outro produto
+          
+Selecione um produto acima para ver as opções de personalização.
+QUANTIDADE *
+PRAZO DESEJADO
+              Normal (5–7 dias úteis)
+              Rápido (2–3 dias úteis)
+              Urgente (a combinar)
+            
+SEU NOME *
+ARTE E OBSERVAÇÕES
+SITUAÇÃO DA ARTE
+            Tenho a arte pronta (finalizada)
+            Preciso de criação da arte
+            Tenho referência, preciso de ajustes
+          
+
+ENVIAR PEDIDO PELO WHATSAPP
+O pedido é enviado para o WhatsApp (12) 98175-9519. Nenhum dado fica salvo no site.
+FALE COM A GENTE
+ESTAMOS AQUI PARA VOCÊ
+Atendimento rápido e direto. Chame no WhatsApp ou venha nos visitar em Jacareí.
+
+ENDEREÇO
+Jacareí – SP
+
+HORÁRIO
+Seg a Sex, 8h–18h · Sáb, 8h–13h
+
+WHATSAPP
+(12) 98175-9519
+
+WHATSAPP
+(12) 98202-5825
+
+INSTAGRAM
+@multigrafica.jacarei
+
+CHAMAR (12) 98175-9519
+
+CHAMAR (12) 98202-5825
+
+SEGUIR NO INSTAGRAM
+RESPOSTA EM MINUTOS
+Mande sua arte ou dúvida e receba o orçamento sem complicação, direto no WhatsApp.
+FALAR AGORA
+@MULTIGRAFICA.JACAREI
+Trabalhos, novidades e promoções no nosso Instagram.
+VER PERFIL
+
+
+
+
+MULTIGRÁFICA
+JACAREÍ · SP
+© 2026 MultiGráfica Jacareí · Todos os direitos reservados
+SERVIÇOS
+PEDIDO
+CONTATO
+
